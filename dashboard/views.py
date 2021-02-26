@@ -18,6 +18,10 @@ from rest_framework import viewsets
 from .serializer import file_serializer, converted_fileserializer
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
+import wget
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 
@@ -110,13 +114,30 @@ def uploadFile(request):
                     user=user
                 )
                 newData.save()
-                print("Yes it is working")
+                print(newData.pk)
             except:
                 print("wrong")
-            return render(request, 'upload_file.html', {'form':form,'uid':user.id, 'uploaded_to':path[0]})
+            return render(request, 'upload_file.html', {'form':form,'uid':user.id, 'uploaded_to':path[0],'file_name':filename})
         return HttpResponse("something wrong")
     
     return render(request, 'upload_file.html', {'form':form,'uid':user.id})
+
+@csrf_exempt
+@api_view(['POST'])
+def download_file(request):
+    if request.method == "POST":
+        try:
+            c_id = request.data.get("c_id")
+            data = convertedFile.objects.get(id=c_id)
+            path = data.c_file
+            url = getHost(request)+"/"+path
+            print(url)
+            wget.download(url)
+            return HttpResponse("yes")
+        except Exception as e:
+            print(e)
+            return HttpResponse("Something Wrong")
+        
 
 def logout(request):
     request.session.clear()

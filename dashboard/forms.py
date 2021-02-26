@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, fileConversion
+from .models import fileConversion
 from django.contrib.auth.models import User
 
 class UserRegistrationForm(forms.ModelForm):

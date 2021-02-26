@@ -3,21 +3,36 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="container-fluid">
     <div class="row">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form}}
-            <button type="submit">Upload</button>
-          </form>
-    </div>
+        <div class="col-md-6 offset-md-3">
+            <div class="md-form">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form}}
+                    <br>
+                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Convert to PDF</button>
+                </form>
+            </div>
+        </div>
+        </div>
     {% if uploaded_to %}
+        <hr>
     <div class="row">
-        <a href="{{ uploaded_to }}" target="_blank">Click To VIEW</a>
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <button class="btn btn-primary"><a href="{{ uploaded_to }}" download="{{file_name}}" style="color: white;">Download<i class="fas fa-download"></i></a></button>
+                <br>
+                <button class="btn btn-info"><a href="{{ uploaded_to }}" target="_blank" style="color: white;">Click To VIEW<i class="fas fa-eye"></i></a></button>
+            </div>
+        </div>
     </div>
     {% endif %}
 </div>
 <script>
     $(document).ready(function(){
         $("select").val('{{uid}}');
+        $("select").css("display",'none');
+        $("[for=id_user]").css('display','none');
+        $("[for=id_myfile]").css('display','none');
     })
 </script>
 {% endblock %}

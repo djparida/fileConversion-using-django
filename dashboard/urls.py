@@ -15,5 +15,6 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='Dashboard'),
     path('convert', views.convertfile, name='convert'),
     path('upload', views.uploadFile, name='uploadFile'),
+    path('download', views.download_file),
     path('logout', views.logout, name='logout')
 ]
