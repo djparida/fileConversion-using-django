@@ -5,6 +5,21 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="md-form">
+                <h2><strong>File Conversion</strong></h2>
+                <select id="from" class="mdb-select md-form colorful-select dropdown-primary" name="Sources1">
+                    <option value="docx" selected>docx</option>
+                    <option value="jpg">jpg</option>
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                    <option value="pdf">pdf</option>
+                </select>
+                <span>to</span>
+                <select id="to" class="mdb-select md-form colorful-select dropdown-primary" name="Sources2">
+                    <option value="jpg">jpg</option>
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                    <option value="pdf" selected>pdf</option>
+                </select>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{form}}
@@ -29,10 +44,17 @@
 </div>
 <script>
     $(document).ready(function(){
-        $("select").val('{{uid}}');
-        $("select").css("display",'none');
+        $("[name=user]").val('{{uid}}');
+        $("[name=user]").css("display",'none');
         $("[for=id_user]").css('display','none');
         $("[for=id_myfile]").css('display','none');
+    })
+    
+    $("#from").change(function(){
+        console.log($(this).val());
+        if($(this).val() == "docx"){
+
+        }
     })
 </script>
 {% endblock %}

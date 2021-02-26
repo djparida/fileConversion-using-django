@@ -21,6 +21,7 @@ from django.contrib.sessions.models import Session
 import wget
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+import requests
 
 
 
@@ -65,11 +66,14 @@ def authentication(request):
         if user is not None:
             login(request, user)
             request.session['logged_User']=[user.username, user.first_name, user.last_name, user.email]
+            if request.GET.get("next"):
+                return redirect(request.GET.get("next"))
             return redirect(dashboard)
         else:
             return HttpResponse("Please Enter the correct Password")
     return render(request, 'login.html')
 
+@login_required(login_url='/login')
 def dashboard(request):
     return render(request, 'dashboard.html')
 
@@ -107,7 +111,6 @@ def uploadFile(request):
             params = { 'File': upload_io, 'converter': 'openoffice' }
             c_file = convertapi.convert('pdf', params)
             path = c_file.save_files('media/')
-            print(path)
             try:
                 newData = convertedFile(
                     c_file=path[0], 
@@ -115,11 +118,10 @@ def uploadFile(request):
                 )
                 newData.save()
                 print(newData.pk)
-            except:
-                print("wrong")
+            except Exception as e:
+                print(f"Problem: {e}")
             return render(request, 'upload_file.html', {'form':form,'uid':user.id, 'uploaded_to':path[0],'file_name':filename})
         return HttpResponse("something wrong")
-    
     return render(request, 'upload_file.html', {'form':form,'uid':user.id})
 
 @csrf_exempt
