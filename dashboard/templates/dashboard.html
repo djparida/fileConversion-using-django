@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    h1,h2,h3,h4,p,a{
+        font-family:Georgia, 'Times New Roman', Times, serif
+    }   
+</style>
+    <div class="content">
+        <center>
+        <h1>Welcome to File Conversion {{ request.session.logged_User.1 }} {{ request.session.logged_User.2 }}</h1>
+        </center>
+    </div>
+{% endblock %}

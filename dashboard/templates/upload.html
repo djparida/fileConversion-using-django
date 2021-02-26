@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="myfile">
+        <button type="submit">Upload</button>
+      </form>
+</div>
+{% endblock %}
