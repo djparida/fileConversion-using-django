@@ -105,12 +105,19 @@ def uploadFile(request):
     if request.method == "POST":
         myform = UploadFileForm(request.POST, request.FILES)
         if myform.is_valid():
-            newFile = myform.save()
-            filename = newFile.myfile
-            upload_io = convertapi.UploadIO(open(f'media/{filename}', 'rb'))
-            params = { 'File': upload_io, 'converter': 'openoffice' }
-            c_file = convertapi.convert('pdf', params)
-            path = c_file.save_files('media/')
+            if "from" in request.GET:
+                _from = request.GET['from']
+                _to = request.GET['to']
+                newFile = myform.save()
+                filename = newFile.myfile
+                path = file_converter(_from,_to,filename)
+            else:
+                newFile = myform.save()
+                filename = newFile.myfile
+                upload_io = convertapi.UploadIO(open(f'media/{filename}', 'rb'))
+                params = { 'File': upload_io, 'converter': 'openoffice' }
+                c_file = convertapi.convert('pdf', params)
+                path = c_file.save_files('media/')
             try:
                 newData = convertedFile(
                     c_file=path[0], 
@@ -123,6 +130,13 @@ def uploadFile(request):
             return render(request, 'upload_file.html', {'form':form,'uid':user.id, 'uploaded_to':path[0],'file_name':filename})
         return HttpResponse("something wrong")
     return render(request, 'upload_file.html', {'form':form,'uid':user.id})
+
+def file_converter(_from, _to, file):
+    c_file = convertapi.convert(f'{_to}', {
+        'File': f'media/{file}'
+    }, from_format = f'{_from}')
+    path = c_file.save_files('media/')
+    return path
 
 @csrf_exempt
 @api_view(['POST'])

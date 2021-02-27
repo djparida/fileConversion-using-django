@@ -11,20 +11,16 @@
                     <option value="jpg">jpg</option>
                     <option value="png">png</option>
                     <option value="jpeg">jpeg</option>
-                    <option value="pdf">pdf</option>
                 </select>
                 <span>to</span>
                 <select id="to" class="mdb-select md-form colorful-select dropdown-primary" name="Sources2">
-                    <option value="jpg">jpg</option>
-                    <option value="png">png</option>
-                    <option value="jpeg">jpeg</option>
                     <option value="pdf" selected>pdf</option>
                 </select>
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" id="conversion_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{form}}
                     <br>
-                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Convert to PDF</button>
+                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" id="cnvBtn" type="submit">Convert to PDF</button>
                 </form>
             </div>
         </div>
@@ -48,13 +44,40 @@
         $("[name=user]").css("display",'none');
         $("[for=id_user]").css('display','none');
         $("[for=id_myfile]").css('display','none');
+        $("#id_myfile").attr("accept",".docx,.doc");
     })
-    
+    var toPdf = '<option>pdf</option>';
+    var toPng = '<option>png</option>';
+    var toJpeg = '<option>jpeg</option>';
+    var toJpg = '<option>jpg</option>';
     $("#from").change(function(){
-        console.log($(this).val());
+        $("#to").html("");
         if($(this).val() == "docx"){
-
+            $("#to").append(toPdf);
+            $("#conversion_form").attr("action","/upload?from=docx&to=pdf");
+            $("#id_myfile").attr("accept",".docx,.doc");
+            $("#cnvBtn").html("Convert to PDF");
+        }else if($(this).val() == "jpg"){
+            $("#conversion_form").attr("action","/upload?from=jpg&to=jpeg");
+            $("#cnvBtn").html("Convert to JPEG");
+            $("#to").append(toJpeg+toPng);
+            $("#id_myfile").attr("accept",".jpg");
+        }else if($(this).val() == "jpeg"){
+            $("#conversion_form").attr("action","/upload?from=jpeg&to=jpg");
+            $("#cnvBtn").html("Convert to JPG");
+            $("#to").append(toJpg+toPng);
+            $("#id_myfile").attr("accept",".jpeg");
+        }else if($(this).val() == "png"){
+            $("#conversion_form").attr("action","/upload?from=png&to=jpg");
+            $("#cnvBtn").html("Convert to JPG");
+            $("#id_myfile").attr("accept",".png");
+            $("#to").append(toJpg+toJpeg);
         }
+    })
+    $("#to").change(function(){
+        console.log($(this).val());
+        $("#conversion_form").attr("action","/upload?from="+ $("#from").val() +"&to="+ $(this).val() +"");
+        $("#cnvBtn").html("Convert to "+ $(this).val() +"");
     })
 </script>
 {% endblock %}
