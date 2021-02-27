@@ -54,21 +54,21 @@
         $("#to").html("");
         if($(this).val() == "docx"){
             $("#to").append(toPdf);
-            $("#conversion_form").attr("action","/upload?from=docx&to=pdf");
+            $("#conversion_form").attr("action","/convertion?from=docx&to=pdf");
             $("#id_myfile").attr("accept",".docx,.doc");
             $("#cnvBtn").html("Convert to PDF");
         }else if($(this).val() == "jpg"){
-            $("#conversion_form").attr("action","/upload?from=jpg&to=jpeg");
+            $("#conversion_form").attr("action","/convertion?from=jpg&to=jpeg");
             $("#cnvBtn").html("Convert to JPEG");
             $("#to").append(toJpeg+toPng);
             $("#id_myfile").attr("accept",".jpg");
         }else if($(this).val() == "jpeg"){
-            $("#conversion_form").attr("action","/upload?from=jpeg&to=jpg");
+            $("#conversion_form").attr("action","/convertion?from=jpeg&to=jpg");
             $("#cnvBtn").html("Convert to JPG");
             $("#to").append(toJpg+toPng);
             $("#id_myfile").attr("accept",".jpeg");
         }else if($(this).val() == "png"){
-            $("#conversion_form").attr("action","/upload?from=png&to=jpg");
+            $("#conversion_form").attr("action","/convertion?from=png&to=jpg");
             $("#cnvBtn").html("Convert to JPG");
             $("#id_myfile").attr("accept",".png");
             $("#to").append(toJpg+toJpeg);
@@ -76,7 +76,7 @@
     })
     $("#to").change(function(){
         console.log($(this).val());
-        $("#conversion_form").attr("action","/upload?from="+ $("#from").val() +"&to="+ $(this).val() +"");
+        $("#conversion_form").attr("action","/convertion?from="+ $("#from").val() +"&to="+ $(this).val() +"");
         $("#cnvBtn").html("Convert to "+ $(this).val() +"");
     })
 </script>
