@@ -5,9 +5,9 @@ from dashboard.models import fileConversion, convertedFile
 class file_serializer(serializers.ModelSerializer):
     class Meta:
         model = fileConversion
-        fields = ('myfile', 'user')
+        fields = ('myfile', 'user','created_on')
 
 class converted_fileserializer(serializers.ModelSerializer):
     class Meta:
         model = convertedFile
-        fields = ('c_file','user')
+        fields = ('c_file','user','created_on')

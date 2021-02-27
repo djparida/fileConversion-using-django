@@ -22,6 +22,8 @@ import wget
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 
@@ -31,13 +33,16 @@ convertapi.api_secret = 'dpLCyj0liZqWEv4I'
 
 
 class myFileConversion(viewsets.ModelViewSet):
+    filter_backends = [DjangoFilterBackend]
     queryset = fileConversion.objects.all()
     serializer_class = file_serializer
+    filter_fields = ['user']
 
 class myConvertedFile(viewsets.ModelViewSet):
+    filter_backends = [DjangoFilterBackend]
     queryset = convertedFile.objects.all()
     serializer_class = converted_fileserializer
-
+    filter_fields = ['user']
 
 
 def index(request):
